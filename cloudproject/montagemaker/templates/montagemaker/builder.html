@@ -1,3 +1,10 @@
 <html>
 	{{ title }}
+
+	<form action="{% url 'montagemaker:montagify' %}" method="post" enctype="multipart/form-data">
+    	{% csrf_token %}
+    	<input type="hidden" name="montage_element_container_id" value="{{title.id}}"/>
+    	<input type="file" name="files" multiple/>
+    	<input type="submit" value="Montagify!" />
+	</form>
 <html>

@@ -1,3 +1,6 @@
 from django.contrib import admin
 
-# Register your models here.
+from montagemaker.models import MontageElement, MontageElementContainer
+
+admin.site.register(MontageElementContainer)
+admin.site.register(MontageElement)
