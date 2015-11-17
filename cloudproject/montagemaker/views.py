@@ -25,10 +25,10 @@ def builder(request):
 
 def montagify(request):
 	for file in request.FILES.getlist('files'):
-		montageElement = MontageElement(video_file = file, container = MontageElementContainer.objects.get(pk=5))
+		montageElement = MontageElement(video_file = file, container = MontageElementContainer.objects.get(pk=1))
 		montageElement.save()
 
-	clip_one = VideoFileClip(MontageElement.objects.get(pk=1)).subclip(1,2)
-	clip_one = VideoFileClip(MontageElement.objects.get(pk=2)).subclip(1,2)
+	clip_one = VideoFileClip(MontageElement.objects.get(pk=1).video_file).subclip(1,2)
+	clip_one = VideoFileClip(MontageElement.objects.get(pk=2).video_file).subclip(1,2)
 	
 	return HttpResponse(concatenate_videoclips([clip_one, clip_two]));
