@@ -2,8 +2,6 @@
 from __future__ import unicode_literals
 
 from django.db import migrations, models
-import datetime
-from django.utils.timezone import utc
 
 
 class Migration(migrations.Migration):
@@ -16,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='montageelementcontainer',
             name='auto_increment_id',
-            field=models.AutoField(default=datetime.datetime(2015, 11, 17, 14, 41, 27, 570572, tzinfo=utc), serialize=False, primary_key=True),
+            field=models.AutoField(default=1, serialize=False, primary_key=True),
             preserve_default=False,
         ),
         migrations.AlterField(

@@ -1,10 +1,27 @@
-<html>
-	{{ title }}
 
-	<form action="{% url 'montagemaker:montagify' %}" method="post" enctype="multipart/form-data">
-    	{% csrf_token %}
-    	<input type="hidden" name="montage_element_container_id" value="{{title.id}}"/>
-    	<input type="file" name="files" multiple/>
-    	<input type="submit" value="Montagify!" />
-	</form>
+{% load dajaxice_templatetags %}
+
+<html>
+    <head>
+        {% dajaxice_js_import %}
+        <script>
+            function my_callback(data){
+                alert(data.message);
+            }
+        </script>
+    </head>
+
+    <body>
+        {{ title }}
+        </br>
+
+        <input type="button" onclick="Dajaxice.montagemaker.sayhello(my_callback)" value="Get message from server!">
+
+        <form action="{% url 'montagemaker:montagify' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="montage_element_container_id" value="{{title.id}}"/>
+            <input type="file" name="files" multiple/>
+            <input type="submit" value="Montagify!" />
+        </form>
+    </body>
 <html>

@@ -29,6 +29,6 @@ def montagify(request):
 		montageElement.save()
 
 	clip_one = VideoFileClip(MontageElement.objects.get(pk=1).video_file).subclip(1,2)
-	clip_one = VideoFileClip(MontageElement.objects.get(pk=2).video_file).subclip(1,2)
+	clip_two = VideoFileClip(MontageElement.objects.get(pk=2).video_file).subclip(1,2)
 	
 	return HttpResponse(concatenate_videoclips([clip_one, clip_two]));
