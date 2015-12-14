@@ -1,27 +1,29 @@
 
-{% load dajaxice_templatetags %}
-
 <html>
     <head>
-        {% dajaxice_js_import %}
-        <script>
-            function my_callback(data){
-                alert(data.message);
-            }
-        </script>
     </head>
 
     <body>
         {{ title }}
-        </br>
 
-        <input type="button" onclick="Dajaxice.montagemaker.sayhello(my_callback)" value="Get message from server!">
+        <form action="{% url 'montagemaker:montagify' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="montageElementContainer" value={{montageElementContiner}}>
+            {% for montageElement in montageElementContainer.montageelement_set.all %}
+                <div float="left">
+                    <video controls autoplay width='50%' height='40%'>
+                        <source src="{{MEDIA_URL}}{{montageElement.video_file}}" type="video/mp4"></source>
+                    </video>
+                </div>
 
-        <form action="{% url 'montagemaker:montagify' %}" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <input type="hidden" name="montage_element_container_id" value="{{title.id}}"/>
-            <input type="file" name="files" multiple/>
-            <input type="submit" value="Montagify!" />
+                <div float="right">
+                    Start point:  min: <input name = "start-min-{{montageElement.video_file}}" type="number" max=60> sec: <input name = "start-sec-{{montageElement.video_file}}" type="number" max=60> </br>
+                    End point:   min: <input name = "end-min-{{montageElement.video_file}}" type="number" max=60> sec: <input name = "end-sec-{{montageElement.video_file}}" type="number" max=60>
+                </div>
+            {% endfor %}
+            <input type = submit>
         </form>
+
+
     </body>
-<html>
+</html>

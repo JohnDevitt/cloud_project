@@ -4,31 +4,44 @@ from django.template import RequestContext, loader
 from montagemaker.models import MontageElementContainer
 from montagemaker.models import MontageElement
 
+from montagemaker.forms import MontageCreateForm
+
 from moviepy.editor import *
 
+# Simple view to load a form that recieves the raw data for a montage
 def create_montage(request):
 	template = loader.get_template('montagemaker/create_montage.html')
 	context = RequestContext(request, {
 	})
 	return HttpResponse(template.render(context))
 
+#  This takes the data from the previous form, a loads an editor
 def builder(request):
 
+	# Create a montage with the supplied name
 	montageElementContainer = MontageElementContainer(title = request.POST['title'])
 	montageElementContainer.save()
 
-	template = loader.get_template('montagemaker/builder.html')
-	context = RequestContext(request, {
-		'title': request.POST['title'],
-	})
-	return HttpResponse(template.render(context))
+	# contextDict for data to be passed to next view
+	contextDict = {}
+	contextDict['title']                   = request.POST['title']
+	contextDict['montageElementContainer'] = montageElementContainer
 
-def montagify(request):
-	for file in request.FILES.getlist('files'):
-		montageElement = MontageElement(video_file = file, container = MontageElementContainer.objects.get(pk=1))
+	print("pre-test")
+
+	for file in request.POST.getlist('files'):
+		print("test")
+		montageElement = MontageElement(video_file = file, container = montageElementContainer)
 		montageElement.save()
 
-	clip_one = VideoFileClip(MontageElement.objects.get(pk=1).video_file).subclip(1,2)
-	clip_two = VideoFileClip(MontageElement.objects.get(pk=2).video_file).subclip(1,2)
+	# Load the editor
+	template = loader.get_template('montagemaker/builder.html')
+	context = RequestContext(request, contextDict)
+	return HttpResponse(template.render(context))
+
+# Finished product
+def montagify(request):
+
+
+	print(request.POST['montageElementContainer'])
 	
-	return HttpResponse(concatenate_videoclips([clip_one, clip_two]));

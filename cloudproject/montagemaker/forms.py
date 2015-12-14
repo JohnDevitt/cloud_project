@@ -1,4 +1,9 @@
 from django import forms
 
-class MontageElementUploadForm(forms.Form):
-    your_name = forms.CharField(label='Your name', max_length=100)
+class MontageCreateForm(forms.Form):
+
+    forms.CharField(label='Montage title', max_length=1000)
+    file = forms.FileField(
+        label='Select a file',
+        help_text='max. 42 megabytes'
+    )
